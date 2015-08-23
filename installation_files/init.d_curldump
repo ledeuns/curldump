@@ -1,0 +1,10 @@
+case "$1" in
+    start)
+        export PATH=/var/www/curldu.mp/curldump/bin
+        cd /var/www/curldu.mp
+        exec uwsgi --ini curldump.ini &
+        ;;
+    stop)
+        pkill uwsgi
+        ;;
+esac
