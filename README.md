@@ -8,7 +8,7 @@ curldump depends on :
 * python-magic
 
 ## Limitations
-curldump needs a webserver to handle Chunked Transfer Encoding (used when content is piped)
+curldump needs a webserver (Nginx/Apache) to handle Chunked Transfer Encoding (used when content is piped)
 
 
 
