@@ -18,6 +18,7 @@
 ## Setup curldump
 * copy curldump.py to /var/www/curldu.mp
 * mkdir /var/www/curldu.mp/files
+* echo "CREATE TABLE short(s TEXT, h TEXT, dt DATETIME);" | sqlite3 /var/www/curldu.mp/short.db
 * chown -R www-data /var/www/curldu.mp
 
 ## Configure Nginx + uwsgi
