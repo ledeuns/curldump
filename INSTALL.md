@@ -1,4 +1,4 @@
-# Quick installation
+# Quick installation (Debian 8)
 
 ## Install components
 * apt-get update
