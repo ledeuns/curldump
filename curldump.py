@@ -5,16 +5,26 @@ import os
 import json
 import uuid
 import magic
+import sqlite3
+import random
+import string
 
 BASE_PATH="/var/www/curldu.mp/files/"
 BASE_URL="http://curldu.mp/"
+SHORTLEN=10
 
 application = Flask(__name__)
 application.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 # Maximum filesize is 1MB
 
 @application.route("/", methods=['GET'])
 def curldump():
-    return Response("curl -T myfile curldu.mp", mimetype="text/plain")
+    return Response("""'curl -T myfile curldu.mp' (works with multiple files)
+or
+'curl -File=@myfile curldu.mp'
+or
+'curl http://curldu.mp | curl -T - curldu.mp'
+
+Can also generate shorter URL : 'curl -H "X-SHORT: yes" -T myfile curldu.mp'""", mimetype="text/plain")
 
 @application.route("/", methods=['POST'])
 def postfile():
@@ -25,6 +35,16 @@ def postfile():
 
     return Response("".join(rv), mimetype="text/uri-list")
 
+@application.route("/s/<fileid>", methods=['GET'])
+def getshort(fileid):
+    if (len(fileid) == SHORTLEN) and (fileid.isalnum() == True):
+        c = sqlite3.connect("short.db")
+        cur = c.cursor()
+        cur.execute("SELECT h FROM short WHERE s='%s'" % fileid)
+        for row in cur:
+            return getfile(row[0])
+    return Response("File not found.\n", mimetype="text/plain")
+
 @application.route("/<fileid>", methods=['GET'])
 def getfile(fileid):
     try:
@@ -33,7 +53,7 @@ def getfile(fileid):
             if len(metadata):
                 return send_file(BASE_PATH+fileid+"/content", attachment_filename=metadata["filename"], as_attachment=True, mimetype=metadata["mime"])
     except:
-        return Response(fileid+" not found.\n", mimetype="text/uri-list")
+        return Response("File not found.\n", mimetype="text/plain")
 
 @application.route("/<filename>", methods=['PUT'])
 def putfile(filename):
@@ -59,8 +79,18 @@ def savefile(filename, s):
     with open(BASE_PATH+h+"/metadata", "w") as of:
         json.dump(metadata, of, indent=2)
 
+    if (request.headers.get("X-SHORT")):
+        return shortened(h)
+
     return h
 
+def shortened(h):
+    s = "".join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(SHORTLEN))
+    c = sqlite3.connect("short.db")
+    c.execute("INSERT INTO short(s, h, dt) VALUES(?, ?, ?)", (s, h, datetime.datetime.now()))
+    c.commit()
+    c.close()
+    return "s/"+s
 
 if __name__ == "__main__":
     try:
