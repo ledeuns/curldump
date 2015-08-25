@@ -43,7 +43,7 @@ def getshort(fileid):
 
 @application.route("/<fileid>", methods=['GET'])
 def getfile(fileid):
-   attach = False
+    attach = False
     if (request.args.has_key("attach")):
         attach = True
     
