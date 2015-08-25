@@ -1,7 +1,10 @@
 ## What is curldu.mp ?
 curldu.mp is a free and open-source service to exchange small files with cURL.
 
+**Never upload confidential files**
+
 ## Usage :
+
 * To upload a file :
   `curl -T /home/myfile curldu.mp`
 or
@@ -15,8 +18,10 @@ or
 * To upload a stream :
   `curl http://curldu.mp | curl -T - curldu.mp`
 
-curldu.mp returns a (list of) URLs. To get a shorter URL, send the 'X-SHORT: yes' HTTP header :
+curldu.mp returns a (list of) URLs. To get a shorter URL, send the *X-SHORT: yes* HTTP header :
   `curl -H "X-SHORT: yes" -T /home/myfile curldu.mp`
+
+To download, just `curl -o myfile http://curldu.mp/6722767993cc75af7d400df472c04d84ea0b6b7d` or paste the returned URL in your browser. Add the *?attach* parameter to download as an attachment.
 
 ## Dependencies
 curldu.mp depends on :
