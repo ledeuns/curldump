@@ -1,4 +1,4 @@
-from flask import Flask, request, send_file, Response
+from flask import Flask, request, send_file, response, render_template, make_response
 import datetime
 import hashlib
 import os
@@ -18,13 +18,9 @@ application.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 # Maximum filesize is
 
 @application.route("/", methods=['GET'])
 def curldump():
-    return Response("""'curl -T myfile curldu.mp' (works with multiple files)
-or
-'curl -File=@myfile curldu.mp'
-or
-'curl http://curldu.mp | curl -T - curldu.mp'
-
-Can also generate shorter URL : 'curl -H "X-SHORT: yes" -T myfile curldu.mp'""", mimetype="text/plain")
+    r = make_response(render_template("index.md"))
+    r.headers["Content-Type"] = "text/plain"
+    return r
 
 @application.route("/", methods=['POST'])
 def postfile():
