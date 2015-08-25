@@ -43,11 +43,15 @@ def getshort(fileid):
 
 @application.route("/<fileid>", methods=['GET'])
 def getfile(fileid):
+   attach = False
+    if (request.args.has_key("attach")):
+        attach = True
+    
     try:
         with open(BASE_PATH+fileid+"/metadata") as mf:    
             metadata = json.load(mf)
             if len(metadata):
-                return send_file(BASE_PATH+fileid+"/content", attachment_filename=metadata["filename"], as_attachment=True, mimetype=metadata["mime"])
+                return send_file(BASE_PATH+fileid+"/content", attachment_filename=metadata["filename"], as_attachment=attach, mimetype=metadata["mime"])
     except:
         return Response("File not found.\n", mimetype="text/plain", status=404)
 
