@@ -39,7 +39,7 @@ def getshort(fileid):
         cur.execute("SELECT h FROM short WHERE s='%s'" % fileid)
         for row in cur:
             return getfile(row[0])
-    return Response("File not found.\n", mimetype="text/plain")
+    return Response("File not found.\n", mimetype="text/plain", status=404)
 
 @application.route("/<fileid>", methods=['GET'])
 def getfile(fileid):
@@ -49,7 +49,7 @@ def getfile(fileid):
             if len(metadata):
                 return send_file(BASE_PATH+fileid+"/content", attachment_filename=metadata["filename"], as_attachment=True, mimetype=metadata["mime"])
     except:
-        return Response("File not found.\n", mimetype="text/plain")
+        return Response("File not found.\n", mimetype="text/plain", status=404)
 
 @application.route("/<filename>", methods=['PUT'])
 def putfile(filename):
