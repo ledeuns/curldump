@@ -1,4 +1,4 @@
-## What curldu.mp ?
+## What is curldu.mp ?
 curldu.mp is a free and open-source service to exchange small files with cURL.
 
 ## Usage :
@@ -29,8 +29,4 @@ curldu.mp depends on :
 curldu.mp needs a webserver (Nginx/Apache) to handle Chunked Transfer Encoding (used when content is piped)
 
 ## Credits :
-curldu.mp is an alternative to http://chunk.io under the free software ISC licence. Fork me at https://github.com/ledeuns/curldump.
-
-
-
-
+curldu.mp is an alternative to http://chunk.io under the free software ISC licence. You can freely install it on your own server. Fork me at https://github.com/ledeuns/curldump.
