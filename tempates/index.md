@@ -18,5 +18,7 @@ or
 curldu.mp returns a (list of) URLs. To get a shorter URL, send the 'X-SHORT: yes' HTTP header :
   `curl -H "X-SHORT: yes" -T /home/myfile curldu.mp`
 
+**Never upload confidential files**
+
 # Credits :
 curldu.mp is an alternative to http://chunk.io under the free software ISC licence. You can freely install it on your own server. Fork me at https://github.com/ledeuns/curldump.
