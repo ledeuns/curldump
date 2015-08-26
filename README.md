@@ -1,7 +1,7 @@
 ## What is curldu.mp ?
 curldu.mp is a free and open-source service to exchange small files with cURL.
 
-**Never upload confidential files**
+**Never upload confidential files, they are not protected from eavesdropping**
 
 ## Usage :
 
@@ -16,7 +16,11 @@ or
   `curl -File=@/home/myfile -File1=@myfile curldu.mp`
 
 * To upload a stream :
-  `curl http://curldu.mp | curl -T - curldu.mp`
+ `curl http://curldu.mp | curl -T - curldu.mp`
+
+* To protect access to your file with HTTP basic authentication :
+  `curl -u user:password -T /home/myfile curldu.mp`
+(better use HTTPS for safety)
 
 curldu.mp returns a (list of) URLs. To get a shorter URL, send the *X-SHORT: yes* HTTP header :
   `curl -H "X-SHORT: yes" -T /home/myfile curldu.mp`

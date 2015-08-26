@@ -50,10 +50,13 @@ def getfile(fileid):
     try:
         with open(BASE_PATH+fileid+"/metadata") as mf:    
             metadata = json.load(mf)
-            if len(metadata):
-                return send_file(BASE_PATH+fileid+"/content", attachment_filename=metadata["filename"], as_attachment=attach, mimetype=metadata["mime"])
+            if (metadata.has_key("auth")):
+                if (checkauth(metadata["auth"]) == False):
+                    raise
+            return send_file(BASE_PATH+fileid+"/content", attachment_filename=metadata["filename"], as_attachment=attach, mimetype=metadata["mime"])
+
     except:
-        return Response("File not found.\n", mimetype="text/plain", status=404)
+        return Response("You have to login to access this file", 401, {"WWW-Authenticate": "Basic realm='Login Required'"})
 
 @application.route("/<filename>", methods=['PUT'])
 def putfile(filename):
@@ -66,6 +69,12 @@ def putstream():
     h = savefile(filename, request.stream)
     return Response(BASE_URL+h+"\n", mimetype="text/uri-list")
 
+def checkauth(auth):
+    if (request.authorization):
+        if (auth == hashlib.sha512(request.authorization["username"]+request.authorization["password"]).hexdigest()):
+            return True
+    return False
+
 def savefile(filename, s):
     now = datetime.datetime.now().isoformat()
     h = hashlib.sha1(""+now+filename).hexdigest()
@@ -76,6 +85,8 @@ def savefile(filename, s):
 
     mt = magic.from_file(BASE_PATH+h+"/content", mime=True)
     metadata = {"filename": filename, "datetime": now, "mime": mt}
+    if (request.authorization):
+        metadata["auth"] = hashlib.sha512(request.authorization["username"]+request.authorization["password"]).hexdigest()
     with open(BASE_PATH+h+"/metadata", "w") as of:
         json.dump(metadata, of, indent=2)
 
