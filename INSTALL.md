@@ -22,7 +22,7 @@
 * chown -R www-data /var/www/curldu.mp
 
 ## Configure Nginx + uwsgi
-* vi /etc/nginx/site-available/curldu.mp :
+* vi /etc/nginx/sites-available/curldu.mp :
 ```
 server {
     listen [::]:80 ipv6only=on;
