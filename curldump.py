@@ -10,7 +10,7 @@ import random
 import string
 
 BASE_PATH="/var/www/curldu.mp/files/"
-BASE_URL="http://curldu.mp/"
+BASE_URL="https://curldu.mp/"
 SHORTLEN=10
 
 application = Flask(__name__)
