@@ -12,6 +12,7 @@ import string
 BASE_PATH="/var/www/curldu.mp/files/"
 BASE_URL="https://curldu.mp/"
 SHORTLEN=10
+SHORTLIFETIME=-30
 
 application = Flask(__name__)
 application.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024 # Maximum filesize is 1MB
@@ -98,6 +99,7 @@ def savefile(filename, s):
 def shortened(h):
     s = "".join(random.SystemRandom().choice(string.ascii_letters + string.digits) for _ in range(SHORTLEN))
     c = sqlite3.connect("short.db")
+    c.execute("DELETE FROM short WHERE dt < ?", (datetime.datetime.now()+datetime.timedelta(days=SHORTLIFETIME),))
     c.execute("INSERT INTO short(s, h, dt) VALUES(?, ?, ?)", (s, h, datetime.datetime.now()))
     c.commit()
     c.close()
