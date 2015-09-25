@@ -24,6 +24,7 @@ or
 
 curldu.mp returns a (list of) URLs. To get a shorter URL, send the *X-SHORT: yes* HTTP header :
   `curl -H "X-SHORT: yes" -T /home/myfile curldu.mp`
+Shorter URLs are cleaned after 30 days.
 
 To download, just `curl -o myfile http://curldu.mp/6722767993cc75af7d400df472c04d84ea0b6b7d` or paste the returned URL in your browser. Add the *?attach* parameter to download as an attachment.
 
