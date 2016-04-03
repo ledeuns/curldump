@@ -7,4 +7,9 @@ case "$1" in
     stop)
         pkill uwsgi
         ;;
+    restart)
+        ${0} stop
+        sleep 2
+        ${0} start
+        ;;
 esac
