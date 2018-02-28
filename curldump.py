@@ -85,7 +85,7 @@ def savefile(filename, s):
         of.write(s.read())
 
     mt = magic.from_file(BASE_PATH+h+"/content", mime=True)
-    metadata = {"filename": filename, "datetime": now, "mime": mt}
+    metadata = {"filename": filename, "datetime": now, "mime": mt, "source": request.environ.get('HTTP_X_REAL_IP', request.remote_addr)}
     if (request.authorization):
         metadata["auth"] = hashlib.sha512(request.authorization["username"]+request.authorization["password"]).hexdigest()
     with open(BASE_PATH+h+"/metadata", "w") as of:
